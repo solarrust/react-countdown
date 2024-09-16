@@ -30,13 +30,13 @@ function timeBalancer(prev) {
 }
 
 export default function Timer() {
+  const [timerState, setTimerState] = useState(TIMER_STATE.STOPPED)
+
   const [timerTime, setTimerTime] = useState({
     hours: 0,
     minutes: 0,
     seconds: 10,
   })
-
-  const [timerState, setTimerState] = useState(TIMER_STATE.STOPPED)
 
   let [timeLeft, setTimeLeft] = useState(timeToSecs(timerTime))
   let timerInterval = useRef(null)
@@ -90,9 +90,9 @@ export default function Timer() {
   return (
     <form className={`timer ${TIMER_CLASS[timerState]}`}>
       <div className="timer__inputs">
-        <Input type={'hours'} value={timerTime.hours} onChange={onChange} disabled={disabled} />
-        <Input type={'minutes'} value={timerTime.minutes} onChange={onChange} disabled={disabled} />
-        <Input type={'seconds'} value={timerTime.seconds} onChange={onChange} disabled={disabled} />
+        <Input type='hours' value={timerTime.hours} onChange={onChange} disabled={disabled} />
+        <Input type='minutes' value={timerTime.minutes} onChange={onChange} disabled={disabled} />
+        <Input type='seconds' value={timerTime.seconds} onChange={onChange} disabled={disabled} />
       </div>
       <div className="timer__left">{timeLeft} sec left</div>
       <div className="timer__buttons">
