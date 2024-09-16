@@ -1,6 +1,33 @@
-import {useState, useEffect, useLayoutEffect} from 'react'
+import {useState, useEffect, useRef} from 'react'
 import Input from './Input'
 import Button from './Button'
+const TIMER_STATE = {
+  RUNNING: 'running',
+  PAUSED: 'paused',
+  STOPPED: 'stopped'
+}
+
+const TIMER_CLASS = {
+  [TIMER_STATE.RUNNING]: '_run',
+  [TIMER_STATE.PAUSED]: '_run _paused',
+  [TIMER_STATE.STOPPED]: ''
+}
+
+function timeToSecs(object) {
+  return Number((object.hours * 60 * 60) + (object.minutes * 60) + (object.seconds))
+}
+
+// TODO: вычитать нужное количество
+// TODO: вынести в отдельный файл и написать тесты
+function timeBalancer(prev) {
+  if (prev.seconds >= 60) {
+    return {...prev, 'minutes': prev.minutes + 1, 'seconds': prev.seconds - 60}
+  } else if (prev.minutes >= 60) {
+    return {...prev, 'hours': prev.hours + 1, 'minutes': prev.minutes - 60}
+  }
+
+  return prev
+}
 
 export default function Timer() {
   const [timerTime, setTimerTime] = useState({
@@ -9,69 +36,69 @@ export default function Timer() {
     seconds: 10,
   })
 
-  const [timerState, setTimerState] = useState({
-    isRun: false,
-    isPaused: false
-  })
+  const [timerState, setTimerState] = useState(TIMER_STATE.STOPPED)
 
-  let timerInterval
   let [timeLeft, setTimeLeft] = useState(timeToSecs(timerTime))
+  let timerInterval = useRef(null)
+
+  const disabled = timerState !== TIMER_STATE.STOPPED
 
   useEffect(() => {
-    if (timerState.isRun && !timerState.isPaused) {
-      timerInterval = setInterval(() => {
-        if(timeLeft <= 0) {
-          setTimerState(prev => ({...prev, isRun: false}))
-          setTimeLeft(timeToSecs(timerTime))
-          clearInterval(timerInterval)
-          return
-        }
-
-        let newTimeLeft = timeLeft - 1
-
-        setTimeLeft(newTimeLeft)
-        console.log(timeLeft)
-      }, 1000);
+    if(timeLeft <= 0) {
+      stopTimer()
     }
+  }, [timeLeft])
 
-    if (!timerState.isRun && !timerState.isPaused) {
-      setTimeLeft(timeToSecs(timerTime))
-    }
-
-    return () => clearInterval(timerInterval);
-  }, [timerTime, timerState, timeLeft])
-
-  useEffect(() => {
-    timeBalancer()
-    document.documentElement.style.setProperty("--timer-duration", timeToSecs(timerTime))
-
-    setTimeLeft(timeToSecs(timerTime))
-  }, [timerTime])
-
-  function timeBalancer() {
-    if (timerTime.seconds >= 60) {
-      setTimerTime(prev => ({...prev, 'minutes': timerTime.minutes++, 'seconds': timerTime.seconds - 60}))
-    } else if (timerTime.minutes >= 60) {
-      setTimerTime(prev => ({...prev, 'hours': timerTime.hours++, 'minutes': timerTime.minutes - 60}))
-    }
+  function stopInterval() {
+    clearInterval(timerInterval.current)
   }
 
-  function timeToSecs(object) {
-    return Number((object.hours * 60 * 60) + (object.minutes * 60) + (object.seconds))
+  function updateTimeLeft() {
+    const newTimeLeft = timeToSecs(timerTime)
+    setTimeLeft(newTimeLeft)
+    document.documentElement.style.setProperty("--timer-duration", newTimeLeft)
   }
 
+  function onChange(value, type) {
+    setTimerTime(prev => timeBalancer({...prev, [type]: value}))
+  }
+
+  function onStart() {
+    if (timerState === TIMER_STATE.RUNNING) return
+
+    if (timerState === TIMER_STATE.STOPPED) {
+      updateTimeLeft()
+    }
+
+    setTimerState(TIMER_STATE.RUNNING)
+
+    timerInterval.current = setInterval(() => {
+      setTimeLeft(prev => prev - 1)
+    }, 1000);
+  }
+
+  function onPause() {
+    setTimerState(TIMER_STATE.PAUSED)
+    stopInterval()
+  }
+
+  function stopTimer() {
+    setTimerState(TIMER_STATE.STOPPED)
+    updateTimeLeft()
+    stopInterval()
+  }
   return (
-    <form className={`timer ${timerState.isRun ? '_run' : ''} ${timerState.isPaused ? '_paused' : ''}`}>
+    <form className={`timer ${TIMER_CLASS[timerState]}`}>
       <div className="timer__inputs">
-        <Input type={'hours'} timerTime={timerTime} setTimerTime={setTimerTime} timerState={timerState} />
-        <Input type={'minutes'} timerTime={timerTime} setTimerTime={setTimerTime} timerState={timerState} />
-        <Input type={'seconds'} timerTime={timerTime} setTimerTime={setTimerTime} timerState={timerState} />
+        <Input type={'hours'} value={timerTime.hours} onChange={onChange} disabled={disabled} />
+        <Input type={'minutes'} value={timerTime.minutes} onChange={onChange} disabled={disabled} />
+        <Input type={'seconds'} value={timerTime.seconds} onChange={onChange} disabled={disabled} />
       </div>
       <div className="timer__left">{timeLeft} sec left</div>
       <div className="timer__buttons">
-        <Button action="pause" timerState={timerState} setTimerState={setTimerState} />
-        <Button action="start" timerState={timerState} setTimerState={setTimerState} />
-        <Button action="stop" timerState={timerState} setTimerState={setTimerState} />
+        <Button action="pause" onClick={onPause} />
+        <Button action="start" onClick={onStart} />
+        <Button action="stop" onClick={stopTimer} />
       </div>
     </form>
   )
