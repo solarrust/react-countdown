@@ -1,0 +1,162 @@
+:root {
+	--timer-duration: 10;
+
+	--bright: #ff6e6e;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html {
+	color-scheme: dark;
+}
+
+body {
+	font-family: sans-serif;
+	height: 100dvh;
+  font-size: 6rem;
+}
+
+:is(input, button) {
+	color: inherit;
+	font: inherit;
+	cursor: pointer;
+}
+
+.sr-only {
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.timer {
+	position: relative;
+	z-index: 1;
+	display: grid;
+	place-items: center;
+	height: 100%;
+
+	&::after {
+		content: "";
+		position: absolute;
+		inset-inline: 0;
+		inset-block-end: 0;
+		block-size: 0dvh;
+		z-index: -1;
+		background-color: color(from var(--bright) srgb r g b / 0.8);
+	}
+
+	:has(._run) &::after {
+		animation: runningTimer calc(var(--timer-duration) * 1s) linear;
+		animation-play-state: running;
+	}
+
+  :has(._run._paused) &::after {
+		animation-play-state: paused;
+	}
+}
+
+.timer__inputs {
+  display: flex;
+  gap: 1em;
+  transition: scale 0.1s ease-out;
+
+  :has(._run) & {
+    scale: 0.3;
+  }
+}
+
+.timer__label {
+  text-align: center;
+}
+
+.timer__number {
+  display: block;
+  background-color: transparent;
+  border: none;
+  inline-size: 3ch;
+  text-align: center;
+
+	&:focus-visible {
+		outline-color: color(from var(--bright) srgb r g b / 0.2);
+	}
+
+	:has(._run) & {
+		pointer-events: none;
+	}
+}
+
+.timer__text {
+  font-size: 0.5em;
+}
+
+.timer__left {
+  scale: 0;
+  transition: scale 0.2s ease-out;
+
+  :has(._run) & {
+    scale: 1;
+  }
+}
+
+.timer__buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.timer__button {
+	inline-size: 140px;
+	aspect-ratio: 1/1;
+	border-radius: 50%;
+	border: none;
+  font-size: 0.3em;
+	background-color: var(--bright);
+	transition: background-color 0.2s;
+  text-transform: uppercase;
+
+  :has(._run) & {
+    filter: grayscale(0.5);
+  }
+
+	&._pause,
+  &._stop {
+    inline-size: 100px;
+    font-size: 0.2em;
+    border: 1px solid var(--bright)
+  }
+
+  &._pause {
+    background-color: color(from var(--bright) srgb r g b / 0.1);
+  }
+
+  &._stop {
+    background-color: transparent;
+  }
+}
+
+@keyframes runningTimer {
+	from {
+		block-size: 100dvh;
+	}
+	to {
+		block-size: 0dvh;
+	}
+}
