@@ -20,13 +20,24 @@ function timeToSecs(object) {
 // TODO: вычитать нужное количество
 // TODO: вынести в отдельный файл и написать тесты
 function timeBalancer(prev) {
-  if (prev.seconds >= 60) {
-    return {...prev, 'minutes': prev.minutes + 1, 'seconds': prev.seconds - 60}
-  } else if (prev.minutes >= 60) {
-    return {...prev, 'hours': prev.hours + 1, 'minutes': prev.minutes - 60}
+  let restSecs = 0,
+      restMins = 0
+
+  if (prev.seconds >= 60){
+    while (prev.seconds >= 60) {
+      prev.seconds -= 60
+      restSecs++
+    }
   }
 
-  return prev
+  if (prev.minutes >= 60) {
+    while (prev.minutes >= 60) {
+      prev.minutes -= 60
+      restMins++
+    }
+  }
+
+  return {...prev, hours: prev.hours + restMins, minutes: prev.minutes + restSecs, seconds: prev.seconds}
 }
 
 export default function Timer() {
