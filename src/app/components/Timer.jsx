@@ -1,6 +1,7 @@
 import {useState, useEffect, useRef} from 'react'
 import Input from './Input'
 import Button from './Button'
+import timeBalancer from '../modules/timeBalancer.js'
 const TIMER_STATE = {
   RUNNING: 'running',
   PAUSED: 'paused',
@@ -15,29 +16,6 @@ const TIMER_CLASS = {
 
 function timeToSecs(object) {
   return Number((object.hours * 60 * 60) + (object.minutes * 60) + (object.seconds))
-}
-
-// TODO: вычитать нужное количество
-// TODO: вынести в отдельный файл и написать тесты
-function timeBalancer(prev) {
-  let restSecs = 0,
-      restMins = 0
-
-  if (prev.seconds >= 60){
-    while (prev.seconds >= 60) {
-      prev.seconds -= 60
-      restSecs++
-    }
-  }
-
-  if (prev.minutes >= 60) {
-    while (prev.minutes >= 60) {
-      prev.minutes -= 60
-      restMins++
-    }
-  }
-
-  return {...prev, hours: prev.hours + restMins, minutes: prev.minutes + restSecs, seconds: prev.seconds}
 }
 
 export default function Timer() {
