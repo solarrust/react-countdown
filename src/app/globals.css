@@ -2,6 +2,7 @@
 	--timer-duration: 10;
 
 	--bright: #ff6e6e;
+	--dark: #1f1f1f;
 }
 
 * {
@@ -18,6 +19,7 @@ body {
 	font-family: sans-serif;
 	height: 100dvh;
   font-size: 6rem;
+	background-color: var(--dark);
 }
 
 :is(input, button) {
@@ -63,12 +65,15 @@ input[type=number] {
 		background-color: color(from var(--bright) srgb r g b / 0.8);
 	}
 
-	:has(._run) &::after {
+	:has(._run, ._paused) &::after {
 		animation: runningTimer calc(var(--timer-duration) * 1s) linear;
+	}
+
+	:has(._run) &::after {
 		animation-play-state: running;
 	}
 
-  :has(._run._paused) &::after {
+  :has(._paused) &::after {
 		animation-play-state: paused;
 	}
 }
@@ -78,7 +83,7 @@ input[type=number] {
   gap: 1em;
   transition: scale 0.1s ease-out;
 
-  :has(._run) & {
+  :has(._run, ._paused) & {
     scale: 0.3;
   }
 }
@@ -98,7 +103,7 @@ input[type=number] {
 		outline-color: color(from var(--bright) srgb r g b / 0.2);
 	}
 
-	:has(._run) & {
+	:has(._run, ._paused) & {
 		pointer-events: none;
 	}
 }
@@ -111,7 +116,7 @@ input[type=number] {
   scale: 0;
   transition: scale 0.2s ease-out;
 
-  :has(._run) & {
+  :has(._run, ._paused) & {
     scale: 1;
   }
 }
@@ -131,16 +136,33 @@ input[type=number] {
 	background-color: var(--bright);
 	transition: background-color 0.2s;
   text-transform: uppercase;
+	user-select: none;
+	cursor: pointer;
 
-  :has(._run) & {
-    filter: grayscale(0.5);
+  :has(._run, ._paused) & {
+    background-color: var(--dark);
+
+		&._pause,
+  	&._stop {
+			border-color: var(--dark);
+		}
   }
+
+	:has(._run) &._start {
+		pointer-events: none;
+		cursor: not-allowed;
+	}
+
+	:has(._paused) &._pause {
+		pointer-events: none;
+		cursor: not-allowed;
+	}
 
 	&._pause,
   &._stop {
     inline-size: 100px;
     font-size: 0.2em;
-    border: 1px solid var(--bright)
+    border: 1px solid var(--bright);
   }
 
   &._pause {

@@ -9,7 +9,7 @@ const TIMER_STATE = {
 
 const TIMER_CLASS = {
   [TIMER_STATE.RUNNING]: '_run',
-  [TIMER_STATE.PAUSED]: '_run _paused',
+  [TIMER_STATE.PAUSED]: '_paused',
   [TIMER_STATE.STOPPED]: ''
 }
 
