@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Input from "./Input";
 import Button from "./Button";
-import timeBalancer from "../modules/timeBalancer.js";
+import balanceTime from "../modules/balanceTime.js";
 const TIMER_STATE = {
   RUNNING: "running",
   PAUSED: "paused",
@@ -56,7 +56,7 @@ export default function Timer() {
    * @param {any} type
    */
   function onChange(value, type) {
-    setTimerTime((/** @type {any} */ prev) => timeBalancer({ ...prev, [type]: value }));
+    setTimerTime((/** @type {any} */ prev) => balanceTime({ ...prev, [type]: value }));
   }
 
   function onStart() {
