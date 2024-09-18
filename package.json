@@ -3,18 +3,25 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev && prettier . --change",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "vitest"
   },
   "dependencies": {
+    "next": "14.2.11",
     "react": "^18",
-    "react-dom": "^18",
-    "next": "14.2.11"
+    "react-dom": "^18"
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "^16.0.1",
+    "@vitejs/plugin-react": "^4.3.1",
     "eslint": "^8",
-    "eslint-config-next": "14.2.11"
+    "eslint-config-next": "14.2.11",
+    "jsdom": "^25.0.0",
+    "prettier": "3.3.3",
+    "vitest": "^2.1.1"
   }
 }

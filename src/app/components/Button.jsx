@@ -1,4 +1,4 @@
-export default function Button({action, onClick}) {
+export default function Button({ action, onClick }) {
   return (
     <button
       className={`timer__button _${action}`}
@@ -7,5 +7,5 @@ export default function Button({action, onClick}) {
     >
       {action}
     </button>
-  )
+  );
 }

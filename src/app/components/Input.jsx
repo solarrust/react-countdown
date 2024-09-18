@@ -1,6 +1,6 @@
-export default function Input({type, value, onChange, disabled}) {
+export default function Input({ type, value, onChange, disabled }) {
   function changeHandler(event) {
-    onChange(Number(event.target.value), type)
+    onChange(Number(event.target.value), type);
   }
 
   return (
@@ -15,5 +15,5 @@ export default function Input({type, value, onChange, disabled}) {
       />
       <span className="timer__text">{type}</span>
     </label>
-  )
+  );
 }
