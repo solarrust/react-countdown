@@ -1,4 +1,4 @@
-import { expect, test, describe, it } from 'vitest';
+import { expect, describe, it } from 'vitest';
 import timeBalancer from '../modules/timeBalancer';
 
 describe.each([
@@ -63,13 +63,13 @@ describe.each([
     }
   }
 ])('timeBalancer function test', ({ input, output }) => {
-  it(`Expect if ${input} equals to ${output}`, () => {
+  it(`Expect if input is ${(JSON.stringify(input))} then result will be equals to ${(JSON.stringify(output))}`, () => {
     expect(timeBalancer(input)).toEqual(output)
   })
 })
 
 describe('Throwing Error if argument didn’t contain "minuets" or "seconds" keys', () => {
-  it("Expect Error", () => {
+  it("Should throw en Error if no required keys were found in object", () => {
     expect(() => timeBalancer({ hours: 0, minutes: 10 })).toThrow()
   })
 })
