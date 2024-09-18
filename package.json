@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest",
-    "gh-pages:404": "cp build/index.html build/404.html"
+    "gh-pages:404": "cp out/index.html out/404.html"
   },
   "dependencies": {
     "next": "14.2.11",
