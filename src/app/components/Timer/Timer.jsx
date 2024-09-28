@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Input from "../Input/Input";
 import Button from "../Button/Button";
 import balanceTime from "../../modules/balanceTime.js";
+import Counter from "../Counter/Counter";
 const TIMER_STATE = {
   RUNNING: "running",
   PAUSED: "paused",
@@ -101,7 +102,7 @@ export default function Timer() {
           disabled={disabled}
         />
       </div>
-      <div className="timer__left">{timeLeft} sec left</div>
+      <Counter secondsLeft={timeLeft} />
       <div className="timer__buttons">
         <Button action="pause" onClick={onPause} />
         <Button action="start" onClick={onStart} />

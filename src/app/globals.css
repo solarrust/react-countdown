@@ -18,7 +18,7 @@ html {
 body {
   height: 100dvh;
   font-family: sans-serif;
-  font-size: 6rem;
+  font-size: clamp(2rem, -0.0563rem + 4.5070vw, 4rem);
   background-color: var(--dark);
 }
 
@@ -58,11 +58,11 @@ input[type="number"] {
   &::after {
     content: "";
     position: absolute;
-    z-index: -1;
-    background-color: color(from var(--bright) srgb r g b / 0.8);
-    inset-inline: 0;
     inset-block-end: 0;
+    inset-inline: 0;
+    z-index: -1;
     block-size: 0dvh;
+    background-color: color(from var(--bright) srgb r g b / 0.8);
   }
 
   :has(._run, ._paused) &::after {
@@ -84,20 +84,20 @@ input[type="number"] {
   transition: scale 0.1s ease-out;
 
   :has(._run, ._paused) & {
-    scale: 0.3;
+    scale: 0.4;
   }
 }
 
-.timer__label {
+.input-label {
   text-align: center;
 }
 
-.timer__number {
+.input {
   display: block;
+  inline-size: 3ch;
   border: none;
   text-align: center;
   background-color: transparent;
-  inline-size: 3ch;
 
   &:focus-visible {
     outline-color: color(from var(--bright) srgb r g b / 0.2);
@@ -108,11 +108,13 @@ input[type="number"] {
   }
 }
 
-.timer__text {
+.input-text {
   font-size: 0.5em;
 }
 
-.timer__left {
+.counter {
+  font-size: 2em;
+  text-align: center;
   transition: scale 0.2s ease-out;
   scale: 0;
 
@@ -127,17 +129,18 @@ input[type="number"] {
   gap: 1rem;
 }
 
-.timer__button {
-  border: none;
+.button {
+  inline-size: 5em;
+  min-inline-size: 70px;
+  aspect-ratio: 1/1;
+  border: 1px solid transparent;
   border-radius: 50%;
-  font-size: 0.3em;
+  font-size: 0.5em;
   text-transform: uppercase;
   background-color: var(--bright);
   transition: background-color 0.2s;
   cursor: pointer;
   user-select: none;
-  inline-size: 140px;
-  aspect-ratio: 1/1;
 
   :has(._run, ._paused) & {
     background-color: var(--dark);
@@ -145,6 +148,10 @@ input[type="number"] {
     &._pause,
     &._stop {
       border-color: var(--dark);
+    }
+
+    &._start {
+      border: 1px solid var(--bright);
     }
   }
 
@@ -160,17 +167,14 @@ input[type="number"] {
 
   &._pause,
   &._stop {
+    min-inline-size: 50px;
     border: 1px solid var(--bright);
-    font-size: 0.2em;
-    inline-size: 100px;
+    font-size: 0.3em;
   }
 
-  &._pause {
-    background-color: color(from var(--bright) srgb r g b / 0.1);
-  }
-
+  &._pause,
   &._stop {
-    background-color: transparent;
+    background-color: color(from var(--bright) srgb r g b / 0.1);
   }
 }
 

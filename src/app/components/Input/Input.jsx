@@ -4,16 +4,16 @@ export default function Input({ type, value, onChange, disabled }) {
   }
 
   return (
-    <label className="timer__label">
+    <label className="input-label">
       <input
-        className="timer__number"
+        className="input"
         type="number"
         min="0"
         value={value}
         onChange={changeHandler}
         disabled={disabled}
       />
-      <span className="timer__text">{type}</span>
+      <span className="input-text">{type}</span>
     </label>
   );
 }
