@@ -5,6 +5,7 @@ export default defineConfig({
   plugins: [react()],
   test: {
     environment: "jsdom",
-    reporters: ['html', 'default', 'verbose']
+    reporters: ["default", "html"],
+    setupFiles: ["./setupTests.js"],
   },
 });

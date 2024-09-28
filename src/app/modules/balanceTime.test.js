@@ -69,7 +69,7 @@ describe.each([
 })
 
 describe('Throwing Error if argument didn’t contain "minuets" or "seconds" keys', () => {
-  it("Should throw en Error if no required keys were found in object", () => {
+  it("Should throw an Error if no required keys were found in object", () => {
     expect(() => balanceTime({ hours: 0, minutes: 10 })).toThrow()
   })
 })

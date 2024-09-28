@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import Input from "./Input";
-import Button from "./Button";
-import balanceTime from "../modules/balanceTime.js";
+import Input from "../Input/Input";
+import Button from "../Button/Button";
+import balanceTime from "../../modules/balanceTime.js";
 const TIMER_STATE = {
   RUNNING: "running",
   PAUSED: "paused",
@@ -14,9 +14,6 @@ const TIMER_CLASS = {
   [TIMER_STATE.STOPPED]: "",
 };
 
-/**
- * @param {{ hours: number; minutes: number; seconds: number; }} object
- */
 function timeToSecs(object) {
   return Number(object.hours * 60 * 60 + object.minutes * 60 + object.seconds);
 }
@@ -48,15 +45,13 @@ export default function Timer() {
   function updateTimeLeft() {
     const newTimeLeft = timeToSecs(timerTime);
     setTimeLeft(newTimeLeft);
-    document.documentElement.style.setProperty("--timer-duration", newTimeLeft);
+    document.documentElement.style.setProperty("--timer-duration", newTimeLeft.toString());
   }
 
-  /**
-   * @param {any} value
-   * @param {any} type
-   */
   function onChange(value, type) {
-    setTimerTime((/** @type {any} */ prev) => balanceTime({ ...prev, [type]: value }));
+    setTimerTime((prev) =>
+      balanceTime({ ...prev, [type]: value }),
+    );
   }
 
   function onStart() {
@@ -69,7 +64,7 @@ export default function Timer() {
     setTimerState(TIMER_STATE.RUNNING);
 
     timerInterval.current = setInterval(() => {
-      setTimeLeft((/** @type {number} */ prev) => prev - 1);
+      setTimeLeft((prev) => prev - 1);
     }, 1000);
   }
 
