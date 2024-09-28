@@ -45,13 +45,14 @@ export default function Timer() {
   function updateTimeLeft() {
     const newTimeLeft = timeToSecs(timerTime);
     setTimeLeft(newTimeLeft);
-    document.documentElement.style.setProperty("--timer-duration", newTimeLeft.toString());
+    document.documentElement.style.setProperty(
+      "--timer-duration",
+      newTimeLeft.toString(),
+    );
   }
 
   function onChange(value, type) {
-    setTimerTime((prev) =>
-      balanceTime({ ...prev, [type]: value }),
-    );
+    setTimerTime((prev) => balanceTime({ ...prev, [type]: value }));
   }
 
   function onStart() {
