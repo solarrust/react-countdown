@@ -80,8 +80,9 @@ export default function Timer() {
     updateTimeLeft();
     stopInterval();
   }
+
   return (
-    <form className={`timer ${TIMER_CLASS[timerState]}`}>
+    <form className={`timer ${TIMER_CLASS[timerState]}`} data-testid="form">
       <div className="timer__inputs">
         <Input
           type="hours"

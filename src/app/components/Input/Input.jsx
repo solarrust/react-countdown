@@ -1,5 +1,6 @@
 export default function Input({ type, value, onChange, disabled }) {
   function changeHandler(event) {
+    if (disabled) return;
     onChange(Number(event.target.value), type);
   }
 
@@ -12,6 +13,7 @@ export default function Input({ type, value, onChange, disabled }) {
         value={value}
         onChange={changeHandler}
         disabled={disabled}
+        data-testid="input"
       />
       <span className="input-text">{type}</span>
     </label>
