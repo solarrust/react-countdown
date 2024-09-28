@@ -1,5 +1,7 @@
 ![Demo Gif](demo.gif)
 
+[https://solarrust.github.io/react-countdown/](https://solarrust.github.io/react-countdown/)
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
